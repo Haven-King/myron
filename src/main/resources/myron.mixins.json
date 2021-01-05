@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.monarkhēs.myron.impl.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+    "BakedModelManagerAccessor",
+    "MixinModelLoader"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
