@@ -1,4 +1,4 @@
-newmtl sprite
+newmtl stone
 ambient_occlusion true
 uvlock true
 texture minecraft:block/stone

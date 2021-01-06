@@ -12,7 +12,7 @@ group = project.maven_group
 
 repositories {
     mavenLocal()
-    maven { url = "https://maven.dblsaiko.net/" }
+    maven { url = "https://hephaestus.dev/release" }
 }
 
 dependencies {
@@ -22,7 +22,7 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "dev.monarkhes:myron:1.5.0"
+    modImplementation "dev.monarkhes:myron:${project.mod_version}"
 }
 
 processResources {

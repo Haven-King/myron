@@ -1,5 +1,5 @@
 {
-  "parent": "myron:block/crystal_ore_item.obj",
+  "parent": "myron:item/crystal_ore_item.obj",
   "gui_light": "side",
   "display": {
     "gui": {

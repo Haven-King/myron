@@ -1,4 +1,0 @@
-newmtl mat
-ambient_occlusion true
-uvlock false
-texture minecraft:block/diamond_block

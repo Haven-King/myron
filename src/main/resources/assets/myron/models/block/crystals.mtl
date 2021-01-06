@@ -1,7 +1,0 @@
-newmtl sprite
-texture myron:block/crystal_base
-
-newmtl myron:crystals
-tint_index 0
-emission true
-texture myron:block/crystal_base

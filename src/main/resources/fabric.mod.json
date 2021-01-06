@@ -17,9 +17,6 @@
       "dev.monarkhes.myrontest.MyronTest"
     ]
   },
-  "mixins": [
-    "myron-test.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.10.8",
     "fabric": "*",

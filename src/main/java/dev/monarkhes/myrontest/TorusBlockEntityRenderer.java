@@ -39,7 +39,7 @@ public class TorusBlockEntityRenderer extends BlockEntityRenderer<TorusBlockEnti
 
             matrices.translate(0.5F, 0.5F, 0.5F);
 
-            float scale = (float) (0.9 + 0.2 * Math.sin(time * 0.025));
+            float scale = (float) (0.4 + 0.05 * Math.sin(time * 0.025));
             matrices.scale(scale, scale, scale);
 
             matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(2 * (time)));
