@@ -1,0 +1,8 @@
+newmtl stone
+ambient_occlusion true
+uvlock true
+texture minecraft:block/stone
+
+newmtl crystals
+ambient_occlusion true
+texture minecraft:block/diamond_block

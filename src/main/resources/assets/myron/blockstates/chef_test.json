@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "frame=0": {
+      "model": "myron:block/cheftest/chef_000001.obj"
+    },
+    "frame=1": {
+      "model": "myron:block/cheftest/chef_000002.obj"
+    },
+    "frame=2": {
+      "model": "myron:block/cheftest/chef_000003.obj"
+    },
+    "frame=3": {
+      "model": "myron:block/cheftest/chef_000004.obj"
+    },
+    "frame=4": {
+      "model": "myron:block/cheftest/chef_000005.obj"
+    },
+    "frame=5": {
+      "model": "myron:block/cheftest/chef_000006.obj"
+    },
+    "frame=6": {
+      "model": "myron:block/cheftest/chef_000007.obj"
+    },
+    "frame=7": {
+      "model": "myron:block/cheftest/chef_000008.obj"
+    },
+    "frame=8": {
+      "model": "myron:block/cheftest/chef_000009.obj"
+    },
+    "frame=9": {
+      "model": "myron:block/cheftest/chef_000010.obj"
+    },
+    "frame=10": {
+      "model": "myron:block/cheftest/chef_000011.obj"
+    },
+    "frame=11": {
+      "model": "myron:block/cheftest/chef_000012.obj"
+    },
+    "frame=12": {
+      "model": "myron:block/cheftest/chef_000013.obj"
+    },
+    "frame=13": {
+      "model": "myron:block/cheftest/chef_000014.obj"
+    },
+    "frame=14": {
+      "model": "myron:block/cheftest/chef_000015.obj"
+    },
+    "frame=15": {
+      "model": "myron:block/cheftest/chef_000016.obj"
+    },
+    "frame=16": {
+      "model": "myron:block/cheftest/chef_000017.obj"
+    },
+    "frame=17": {
+      "model": "myron:block/cheftest/chef_000018.obj"
+    },
+    "frame=18": {
+      "model": "myron:block/cheftest/chef_000019.obj"
+    },
+    "frame=19": {
+      "model": "myron:block/cheftest/chef_000020.obj"
+    },
+    "frame=20": {
+      "model": "myron:block/cheftest/chef_000021.obj"
+    },
+    "frame=21": {
+      "model": "myron:block/cheftest/chef_000022.obj"
+    },
+    "frame=22": {
+      "model": "myron:block/cheftest/chef_000023.obj"
+    },
+    "frame=23": {
+      "model": "myron:block/cheftest/chef_000024.obj"
+    },
+    "frame=24": {
+      "model": "myron:block/cheftest/chef_000025.obj"
+    },
+    "frame=25": {
+      "model": "myron:block/cheftest/chef_000026.obj"
+    },
+    "frame=26": {
+      "model": "myron:block/cheftest/chef_000027.obj"
+    },
+    "frame=27": {
+      "model": "myron:block/cheftest/chef_000028.obj"
+    },
+    "frame=28": {
+      "model": "myron:block/cheftest/chef_000029.obj"
+    },
+    "frame=29": {
+      "model": "myron:block/cheftest/chef_000030.obj"
+    },
+    "frame=30": {
+      "model": "myron:block/cheftest/chef_000031.obj"
+    },
+    "frame=31": {
+      "model": "myron:block/cheftest/chef_000032.obj"
+    },
+    "frame=32": {
+      "model": "myron:block/cheftest/chef_000033.obj"
+    },
+    "frame=33": {
+      "model": "myron:block/cheftest/chef_000034.obj"
+    },
+    "frame=34": {
+      "model": "myron:block/cheftest/chef_000035.obj"
+    },
+    "frame=35": {
+      "model": "myron:block/cheftest/chef_000036.obj"
+    },
+    "frame=36": {
+      "model": "myron:block/cheftest/chef_000037.obj"
+    },
+    "frame=37": {
+      "model": "myron:block/cheftest/chef_000038.obj"
+    },
+    "frame=38": {
+      "model": "myron:block/cheftest/chef_000039.obj"
+    },
+    "frame=39": {
+      "model": "myron:block/cheftest/chef_000040.obj"
+    }
+  }
+}

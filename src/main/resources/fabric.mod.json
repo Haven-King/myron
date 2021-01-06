@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "myron-test",
+  "version": "${version}",
+  "name": "Myron Test",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/myron-test/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "dev.monarkhes.myrontest.MyronTest"
+    ],
+    "main": [
+      "dev.monarkhes.myrontest.MyronTest"
+    ]
+  },
+  "mixins": [
+    "myron-test.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.10.8",
+    "fabric": "*",
+    "minecraft": "1.16.4"
+  }
+}

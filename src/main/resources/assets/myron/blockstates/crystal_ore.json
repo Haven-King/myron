@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {
+      "apply": { "model": "minecraft:block/stone", "uvlock": true}
+    },
+    {
+      "apply": [
+        { "model": "myron:block/crystal_ore.obj" },
+        { "model": "myron:block/crystal_ore.obj", "y": 90 },
+        { "model": "myron:block/crystal_ore.obj", "y": 180 },
+        { "model": "myron:block/crystal_ore.obj", "y": 270 },
+        { "model": "myron:block/crystal_ore.obj", "x": 90 },
+        { "model": "myron:block/crystal_ore.obj", "x": 270 }
+      ]
+    }
+  ]
+}
