@@ -12,4 +12,5 @@ import java.util.Map;
 public interface BakedModelManagerAccessor {
     @Accessor
     Map<Identifier, BakedModel> getModels();
+
 }

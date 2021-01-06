@@ -9,6 +9,12 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 public class MyronMaterial {
+    public static final MyronMaterial DEFAULT = new MyronMaterial("missing_texture");
+
+    static {
+        DEFAULT.setTexture(new Identifier(""));
+    }
+
     public final String name;
 
     private int tintIndex = -1;

@@ -101,11 +101,19 @@ public class MaterialReader {
     private static String next(BufferedReader reader) throws IOException {
         String line = trim(reader.readLine());
 
+        if (line == null) return null;
+
+        StringBuilder result = new StringBuilder(line);
+
         while (line != null && line.endsWith("\\")) {
-            line += " " + trim(reader.readLine());
+            line = trim(reader.readLine());
+
+            if (line != null) {
+                result.append(" ").append(line);
+            }
         }
 
-        return line;
+        return result.toString();
     }
 
     private static String trim(String line) {

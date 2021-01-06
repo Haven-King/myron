@@ -2,12 +2,12 @@ package dev.monarkhēs.myron.impl.client.obj;
 
 import de.javagl.obj.Obj;
 import de.javagl.obj.ObjReader;
-import de.javagl.obj.ObjUtils;
 import dev.monarkhēs.myron.impl.client.Myron;
 import dev.monarkhēs.myron.impl.client.model.MyronMaterial;
 import dev.monarkhēs.myron.impl.client.model.MyronUnbakedModel;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +20,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class AbstractObjLoader {
-    protected @Nullable UnbakedModel loadModel(ResourceManager resourceManager, Identifier identifier, ModelTransformation transformation, boolean isSideLit) {
+    protected final static Vector3f ORIGIN = new Vector3f();
+    protected final static Vector3f BLOCKS = new Vector3f(0.5F, 0.5F, 0.5F);
+
+    protected @Nullable UnbakedModel loadModel(
+            ResourceManager resourceManager, Identifier identifier, ModelTransformation transformation, boolean isSideLit) {
         if (identifier.getPath().endsWith(".obj")) {
             try {
                 if (!identifier.getPath().startsWith("models/")) {
@@ -37,15 +41,19 @@ public class AbstractObjLoader {
                     Identifier resource = new Identifier(identifier.getNamespace(), path);
 
                     if (resourceManager.containsResource(resource)) {
-                        MaterialReader.read(new BufferedReader(new InputStreamReader(resourceManager.getResource(resource).getInputStream()))).forEach(material -> {
-                            materials.put(material.name, material);
-                        });
+                        MaterialReader.read(
+                                new BufferedReader(
+                                    new InputStreamReader(resourceManager.getResource(resource).getInputStream())))
+                            .forEach(material -> materials.put(material.name, material));
                     } else {
                         Myron.LOGGER.warn("Texture does not exist: {}", resource);
                     }
                 }
 
-                return new MyronUnbakedModel(ObjUtils.triangulate(obj), materials, transformation, isSideLit);
+                return new MyronUnbakedModel(obj, materials, transformation, isSideLit,
+                        identifier.getPath().startsWith("models/block")
+                                ? BLOCKS
+                                : ORIGIN);
             } catch (IOException e) {
                 Myron.LOGGER.warn("Failed to load model {}:\n{}", identifier, e.getMessage());
             }

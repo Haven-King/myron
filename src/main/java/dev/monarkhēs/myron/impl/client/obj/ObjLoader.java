@@ -52,18 +52,13 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
         try (Reader reader = new InputStreamReader(this.resourceManager.getResource(resource).getInputStream())) {
             JsonObject rawModel = JsonHelper.deserialize(reader);
 
-            JsonElement parent = rawModel.get("parent");
-            if ((!(parent instanceof JsonPrimitive) || !((JsonPrimitive) parent).isString() || !parent.getAsString().endsWith(".obj"))) {
+            JsonElement model = rawModel.get("model");
+            if ((!(model instanceof JsonPrimitive) || !((JsonPrimitive) model).isString() || !model.getAsString().endsWith(".obj"))) {
                 return null;
             }
 
-            Identifier parentPath = new Identifier(parent.getAsString());
-            ModelTransformation transformation = ModelTransformation.NONE;
-
-            if (rawModel.has("display")) {
-                JsonObject rawTransform = JsonHelper.getObject(rawModel, "display");
-                transformation = GSON.fromJson(rawTransform, ModelTransformation.class);
-            }
+            Identifier modelPath = new Identifier(model.getAsString());
+            ModelTransformation transformation = this.getTransformation(rawModel);
 
             boolean isSideLit = true;
 
@@ -71,10 +66,32 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
                 isSideLit = JsonHelper.getString(rawModel, "gui_light").equals("side");
             }
 
-            return this.loadModel(this.resourceManager, parentPath, transformation, isSideLit);
+            return this.loadModel(this.resourceManager, modelPath, transformation, isSideLit);
         } catch (IOException e) {
             Myron.LOGGER.warn("Failed to load model {}:\n{}", resource, e.getMessage());
             return null;
+        }
+    }
+
+    private ModelTransformation getTransformation(JsonObject rawModel) throws IOException {
+        if (rawModel.has("display")) {
+            JsonObject rawTransform = JsonHelper.getObject(rawModel, "display");
+            return GSON.fromJson(rawTransform, ModelTransformation.class);
+        } else if (rawModel.has("parent")) {
+            String[] parentStrings = JsonHelper.getString(rawModel, "parent").split(":");
+            Identifier parent = new Identifier(parentStrings[0], "models/" + parentStrings[1] + ".json");
+            return this.getTransformation(parent);
+        } else {
+            return ModelTransformation.NONE;
+        }
+    }
+
+    private ModelTransformation getTransformation(Identifier model) throws IOException {
+        if (this.resourceManager.containsResource(model)) {
+            Reader reader = new InputStreamReader(this.resourceManager.getResource(model).getInputStream());
+            return getTransformation(JsonHelper.deserialize(reader));
+        } else {
+            return ModelTransformation.NONE;
         }
     }
 

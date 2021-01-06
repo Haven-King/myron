@@ -5,7 +5,6 @@ import de.javagl.obj.FloatTuple;
 import de.javagl.obj.Obj;
 import de.javagl.obj.ObjFace;
 import de.javagl.obj.ObjSplitting;
-import dev.monarkhēs.myron.impl.client.Myron;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
@@ -28,8 +27,6 @@ import java.util.*;
 import java.util.function.Function;
 
 public class MyronUnbakedModel implements UnbakedModel {
-    public static final Identifier SPRITE = new Identifier(Myron.MOD_ID, "sprite");
-
     public static final SpriteIdentifier DEFAULT_SPRITE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, null);
 
     private final Obj obj;
@@ -38,12 +35,14 @@ public class MyronUnbakedModel implements UnbakedModel {
     private final Collection<SpriteIdentifier> textureDependencies = new HashSet<>();
     private final SpriteIdentifier sprite;
     private final boolean isSideLit;
+    private final Vector3f offset;
 
-    public MyronUnbakedModel(Obj obj, Map<String, MyronMaterial> materials, ModelTransformation transform, boolean isSideLit) {
+    public MyronUnbakedModel(Obj obj, Map<String, MyronMaterial> materials, ModelTransformation transform, boolean isSideLit, Vector3f offset) {
         this.obj = obj;
         this.materials = materials;
         this.transform = transform;
         this.isSideLit = isSideLit;
+        this.offset = offset;
 
         for (MyronMaterial material : materials.values()) {
             this.textureDependencies.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, material.getTexture()));
@@ -85,17 +84,19 @@ public class MyronUnbakedModel implements UnbakedModel {
             Obj group = entry.getValue();
             MyronMaterial material = this.getMaterial(entry.getKey());
 
-            if (material != null) {
-                int materialColor = material.getColor();
-                Sprite sprite = textureGetter.apply(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, material.getTexture()));
+            if (material == null) {
+                material = MyronMaterial.DEFAULT;
+            }
 
-                for (int faceIndex = 0; faceIndex < group.getNumFaces(); ++faceIndex) {
-                    face(renderer, emitter, group, group.getFace(faceIndex), material, materialColor, sprite, settings);
-                }
+            int materialColor = material.getColor();
+            Sprite sprite = textureGetter.apply(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, material.getTexture()));
+
+            for (int faceIndex = 0; faceIndex < group.getNumFaces(); ++faceIndex) {
+                face(renderer, emitter, group, group.getFace(faceIndex), material, materialColor, sprite, settings);
             }
         }
 
-        return new MyronBakedModel(builder.build(), transform, textureGetter.apply(this.sprite), this.isSideLit);
+        return new MyronBakedModel(builder.build(), this.transform, textureGetter.apply(this.sprite), this.isSideLit);
     }
 
     private void face(Renderer renderer, QuadEmitter emitter, Obj group, ObjFace face, MyronMaterial material, int materialColor, Sprite sprite, ModelBakeSettings settings) {
@@ -122,6 +123,9 @@ public class MyronUnbakedModel implements UnbakedModel {
 
     private void vertex(QuadEmitter emitter, Obj group, ObjFace face, int vertex, ModelBakeSettings settings) {
         Vector3f pos = of(group.getVertex(face.getVertexIndex(vertex)));
+
+        // Used to offset blocks
+        pos.add(this.offset);
         Vector3f normal = of(group.getNormal(face.getNormalIndex(vertex)));
 
         float u = 0, v = 0;
