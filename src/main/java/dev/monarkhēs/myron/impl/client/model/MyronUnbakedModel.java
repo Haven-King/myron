@@ -100,13 +100,83 @@ public class MyronUnbakedModel implements UnbakedModel {
     }
 
     private void face(Renderer renderer, QuadEmitter emitter, Obj group, ObjFace face, MyronMaterial material, int materialColor, Sprite sprite, ModelBakeSettings settings) {
-        // TODO: Triangulation of larger faces
         if (face.getNumVertices() <= 4) {
             for (int vertex = 0; vertex < face.getNumVertices(); ++vertex) {
                 vertex(emitter, group, face, vertex, settings);
             }
-        }
 
+            emit(renderer, emitter, material, materialColor, sprite, settings);
+        } else {
+            final int vertices = face.getNumVertices();
+
+            FloatTuple textureCoords = face.containsTexCoordIndices()
+                    ? group.getTexCoord(face.getTexCoordIndex(0))
+                    : null;
+
+            Vector3f pos = of(group.getVertex(face.getVertexIndex(0)));
+            pos.add(this.offset);
+            Vector3f normal = of(group.getNormal(face.getNormalIndex(0)));
+
+            rotate(settings, pos, normal);
+
+            final Vertex start = new Vertex(
+                    pos,
+                    normal,
+                    textureCoords == null ? 0 : textureCoords.getX(),
+                    textureCoords == null ? 0 : textureCoords.getY()
+            );
+
+            for (int vertex = 1; vertex < vertices - 1; ++vertex) {
+                vertex(emitter, 0, start.pos, start.normal, start.u, start.v);
+
+                textureCoords = face.containsTexCoordIndices()
+                        ? group.getTexCoord(face.getTexCoordIndex(vertex))
+                        : null;
+
+                pos = of(group.getVertex(face.getVertexIndex(vertex)));
+                pos.add(this.offset);
+                normal = of(group.getNormal(face.getNormalIndex(vertex)));
+
+                rotate(settings, pos, normal);
+
+                vertex(emitter, 1,
+                        pos,
+                        normal,
+                        textureCoords == null ? 0 : textureCoords.getX(),
+                        textureCoords == null ? 0 : textureCoords.getY()
+                );
+
+                textureCoords = face.containsTexCoordIndices()
+                        ? group.getTexCoord(face.getTexCoordIndex(vertex + 1))
+                        : null;
+
+                pos = of(group.getVertex(face.getVertexIndex(vertex + 1)));
+                pos.add(this.offset);
+                normal = of(group.getNormal(face.getNormalIndex(vertex + 1)));
+
+                rotate(settings, pos, normal);
+
+
+                vertex(emitter, 2,
+                        pos,
+                        normal,
+                        textureCoords == null ? 0 : textureCoords.getX(),
+                        textureCoords == null ? 0 : textureCoords.getY()
+                );
+
+                vertex(emitter, 3,
+                        pos,
+                        normal,
+                        textureCoords == null ? 0 : textureCoords.getX(),
+                        textureCoords == null ? 0 : textureCoords.getY()
+                );
+
+                emit(renderer, emitter, material, materialColor, sprite, settings);
+            }
+        }
+    }
+
+    private void emit(Renderer renderer, QuadEmitter emitter, MyronMaterial material, int materialColor, Sprite sprite, ModelBakeSettings settings) {
         emitter.material(material.getMaterial(renderer));
         emitter.spriteColor(0, materialColor, materialColor, materialColor, materialColor);
         emitter.colorIndex(material.getTintIndex());
@@ -135,18 +205,22 @@ public class MyronUnbakedModel implements UnbakedModel {
             v = textureCoords.getY();
         }
 
+        rotate(settings, pos, normal);
+
+        vertex(emitter, vertex, pos, normal, u, v);
+
+        if (face.getNumVertices() == 3) {
+            vertex(emitter, vertex + 1, pos, normal, u, v);
+        }
+    }
+
+    private static void rotate(ModelBakeSettings settings, Vector3f pos, Vector3f normal) {
         if (settings.getRotation() != AffineTransformation.identity()) {
             pos.add(-0.5F, -0.5F, -0.5F);
             pos.rotate(settings.getRotation().getRotation2());
             pos.add(0.5f, 0.5f, 0.5f);
 
             normal.rotate(settings.getRotation().getRotation2());
-        }
-
-        vertex(emitter, vertex, pos, normal, u, v);
-
-        if (face.getNumVertices() == 3) {
-            vertex(emitter, vertex + 1, pos, normal, u, v);
         }
     }
 
@@ -158,5 +232,19 @@ public class MyronUnbakedModel implements UnbakedModel {
 
     private static Vector3f of(FloatTuple tuple) {
         return new Vector3f(tuple.getX(), tuple.getY(), tuple.getZ());
+    }
+
+    private static class Vertex {
+        public final Vector3f pos;
+        public final Vector3f normal;
+        public final float u;
+        public final float v;
+
+        private Vertex(Vector3f pos, Vector3f normal, float u, float v) {
+            this.pos = pos;
+            this.normal = normal;
+            this.u = u;
+            this.v = v;
+        }
     }
 }
