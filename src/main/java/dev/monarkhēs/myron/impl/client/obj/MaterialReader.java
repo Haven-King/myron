@@ -157,6 +157,10 @@ public class MaterialReader {
      */
     private static int parseInt(String s, int radix) throws IOException
     {
+        if (radix == 16 && s.startsWith("0x")) {
+            s = s.substring(2);
+        }
+
         try
         {
             return Integer.parseInt(s, radix);
