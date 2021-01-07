@@ -32,7 +32,7 @@ public class MaterialReader {
 
         register((tokenizer, line, key, material) ->
                         material.setColorIndex(parseBoolean(tokenizer.nextToken())),
-                "tintindex");
+                "color_index");
 
         register((tokenizer, line, key, material) ->
                         material.setDiffuseShading(parseBoolean(tokenizer.nextToken())),
