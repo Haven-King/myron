@@ -27,8 +27,6 @@ dependencies {
 
     modCompile "de.javagl:obj:${obj_version}"
     include "de.javagl:obj:${obj_version}"
-
-    modImplementation ("grondag:jmx-mc116:1.21.182+") { transitive = false}
 }
 
 processResources {
