@@ -1,0 +1,4 @@
+newmtl leaves
+texture minecraft:block/oak_leaves
+blend_mode cutout
+tint_index 0

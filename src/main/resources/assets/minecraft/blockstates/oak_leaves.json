@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "": [
+      { "model": "myron:block/leaves", "weight": 2 },
+      { "model": "myron:block/leaves_big", "weight": 1 },
+      { "model": "myron:block/leaves_small", "weight": 3 }
+    ]
+  }
+}

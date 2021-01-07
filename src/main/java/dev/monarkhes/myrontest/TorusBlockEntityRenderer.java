@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 import java.util.Random;
 
 public class TorusBlockEntityRenderer extends BlockEntityRenderer<TorusBlockEntity> {
-    private static final Identifier MODEL = new Identifier("myron", "models/torus.obj");
+    private static final Identifier MODEL = new Identifier("myron", "models/misc/torus");
 
     public TorusBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
         super(dispatcher);

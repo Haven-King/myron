@@ -1,5 +1,5 @@
 {
   "parent": "minecraft:block/block",
-  "model": "myron:block/crystal_ore_item.obj",
+  "model": "myron:block/crystal_ore_item",
   "gui_light": "side"
 }
