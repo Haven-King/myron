@@ -15,7 +15,7 @@ import net.minecraft.util.registry.Registry;
 
 public class MyronTest implements ModInitializer, ClientModInitializer {
     public static final Block CRYSTAL_ORE = new Block(FabricBlockSettings.of(Material.STONE));
-    public static final Block TORUS = new TaurusBlock(FabricBlockSettings.of(Material.METAL).nonOpaque());
+    public static final Block TORUS = new TorusBlock(FabricBlockSettings.of(Material.METAL).nonOpaque());
 
     public static final BlockEntityType<TorusBlockEntity> TORUS_BLOCK_ENTITY = BlockEntityType.Builder.create(TorusBlockEntity::new, TORUS).build(null);
 

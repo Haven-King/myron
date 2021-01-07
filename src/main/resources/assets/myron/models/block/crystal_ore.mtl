@@ -1,7 +1,7 @@
-newmtl stone
-ambient_occlusion true
-uvlock true
-texture minecraft:block/stone
+newmtl stone # Test
+ambient_occlusion true # test 2
+uvlock true # test 3
+texture minecraft:block/stone # test 4
 
 newmtl crystals
 ambient_occlusion true

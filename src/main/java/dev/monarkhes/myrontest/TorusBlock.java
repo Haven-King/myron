@@ -5,8 +5,8 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.world.BlockView;
 
-public class TaurusBlock extends BlockWithEntity {
-    public TaurusBlock(FabricBlockSettings settings) {
+public class TorusBlock extends BlockWithEntity {
+    public TorusBlock(FabricBlockSettings settings) {
         super(settings);
     }
 
