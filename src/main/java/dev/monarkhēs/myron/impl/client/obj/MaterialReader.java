@@ -68,7 +68,7 @@ public class MaterialReader {
 
     public static void register(Option option, String... tokens) {
         for (String key : tokens) {
-            OPTIONS.putIfAbsent(key, option);
+            OPTIONS.putIfAbsent(key.toLowerCase(Locale.ROOT), option);
         }
     }
 
@@ -88,9 +88,9 @@ public class MaterialReader {
 
             if (!tokenizer.hasMoreTokens()) continue;
 
-            String token = tokenizer.nextToken();
+            String token = tokenizer.nextToken().toLowerCase(Locale.ROOT);
 
-            if (token.equalsIgnoreCase("newmtl")) {
+            if (token.equals("newmtl")) {
                 String name = line.substring("newmtl".length()).trim();
                 currentMaterial = new MyronMaterial(name);
                 materials.add(currentMaterial);
