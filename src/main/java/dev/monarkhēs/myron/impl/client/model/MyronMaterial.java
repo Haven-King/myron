@@ -20,7 +20,7 @@ public class MyronMaterial {
     private int tintIndex = -1;
     private int color = -1;
     private Identifier texture;
-    private BlendMode blendMode = BlendMode.SOLID;
+    private BlendMode blendMode = BlendMode.DEFAULT;
 
     private boolean uvLocked = false;
     private boolean diffuseShading = true;
