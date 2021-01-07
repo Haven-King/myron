@@ -40,7 +40,7 @@ public class MaterialReader {
 
         register((tokenizer, line, key, material) ->
                         material.setAmbientOcclusion(parseBoolean(tokenizer.nextToken())),
-                "ambient_occlusion", "ao");
+                "ambient_occlusion", "ambientocclusion", "ao");
 
         register((tokenizer, line, key, material) ->
                         material.setColor(parseInt(tokenizer.nextToken(), 16)),
