@@ -78,6 +78,12 @@ public class MaterialReader {
         MyronMaterial currentMaterial = null;
 
         for (String line = reader.readLine(); line != null; line = next(reader)) {
+            int comment = line.indexOf('#');
+
+            if (comment > 0) {
+                line = line.substring(0, comment);
+            }
+
             StringTokenizer tokenizer = new StringTokenizer(line);
 
             if (!tokenizer.hasMoreTokens()) continue;
