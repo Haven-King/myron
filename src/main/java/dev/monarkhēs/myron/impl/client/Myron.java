@@ -5,8 +5,14 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.system.CallbackI;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 @Environment(EnvType.CLIENT)
 public class Myron implements ClientModInitializer {
@@ -18,7 +24,37 @@ public class Myron implements ClientModInitializer {
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(ObjLoader::new);
         ModelLoadingRegistry.INSTANCE.registerVariantProvider(ObjLoader::new);
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-            manager.findResources("models", path -> path.endsWith(".obj")).forEach(out);
+            Collection<Identifier> ids = new HashSet<>();
+
+            Collection<Identifier> candidates = new ArrayList<>();
+            candidates.addAll(manager.findResources("models/block", path -> true));
+            candidates.addAll(manager.findResources("models/item", path -> true));
+            candidates.addAll(manager.findResources("models/misc", path -> true));
+
+            for (Identifier id : candidates) {
+                if (id.getPath().endsWith(".obj")) {
+                    ids.add(id);
+                    ids.add(new Identifier(id.getNamespace(), id.getPath().substring(0, id.getPath().indexOf(".obj"))));
+                } else {
+                    Identifier test = new Identifier(id.getNamespace(), id.getPath() + ".obj");
+
+                    if (manager.containsResource(test)) {
+                        ids.add(id);
+                    }
+                }
+            }
+
+            ids.forEach(
+                id -> {
+                    String path = id.getPath();
+
+                    if (path.startsWith("models/")) {
+                        out.accept(new Identifier(id.getNamespace(), path.substring("models/".length())));
+                    }
+
+                    out.accept(id);
+                }
+            );
         });
 
         LOGGER.info("Myron Initialized!");

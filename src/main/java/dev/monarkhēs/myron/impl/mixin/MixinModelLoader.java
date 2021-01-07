@@ -29,21 +29,19 @@ public abstract class MixinModelLoader {
 
     @Inject(method = "loadModel", at = @At("HEAD"), cancellable = true)
     private void addObjModel(Identifier id, CallbackInfo ci) {
-        if (id.getPath().endsWith(".obj")) {
-            if (this.objModelProvider == null) {
-                this.objModelProvider = new ObjLoader(this.resourceManager);
-            }
+        if (this.objModelProvider == null) {
+            this.objModelProvider = new ObjLoader(this.resourceManager);
+        }
 
-            try {
-                @Nullable UnbakedModel model = this.objModelProvider.loadModelResource(id, null);
+        try {
+            @Nullable UnbakedModel model = this.objModelProvider.loadModelResource(id, null);
 
-                if (model != null) {
-                    this.putModel(id, model);
-                    ci.cancel();
-                }
-            } catch (ModelProviderException e) {
-                e.printStackTrace();
+            if (model != null) {
+                this.putModel(id, model);
+                ci.cancel();
             }
+        } catch (ModelProviderException e) {
+            e.printStackTrace();
         }
     }
 }

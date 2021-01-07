@@ -25,11 +25,16 @@ public class AbstractObjLoader {
 
     protected @Nullable UnbakedModel loadModel(
             ResourceManager resourceManager, Identifier identifier, ModelTransformation transformation, boolean isSideLit) {
-        if (identifier.getPath().endsWith(".obj")) {
+        if (!identifier.getPath().endsWith(".obj")) {
+            identifier = new Identifier(identifier.getNamespace(), identifier.getPath() + ".obj");
+        }
+
+        if (!identifier.getPath().startsWith("models/")) {
+            identifier = new Identifier(identifier.getNamespace(), "models/" + identifier.getPath());
+        }
+
+        if (resourceManager.containsResource(identifier)) {
             try {
-                if (!identifier.getPath().startsWith("models/")) {
-                    identifier = new Identifier(identifier.getNamespace(), "models/" + identifier.getPath());
-                }
 
                 InputStream inputStream = resourceManager.getResource(identifier).getInputStream();
                 Obj obj = ObjReader.read(inputStream);

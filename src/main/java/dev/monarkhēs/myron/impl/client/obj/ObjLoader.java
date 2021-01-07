@@ -53,7 +53,7 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
             JsonObject rawModel = JsonHelper.deserialize(reader);
 
             JsonElement model = rawModel.get("model");
-            if ((!(model instanceof JsonPrimitive) || !((JsonPrimitive) model).isString() || !model.getAsString().endsWith(".obj"))) {
+            if (!(model instanceof JsonPrimitive) || !((JsonPrimitive) model).isString()) {
                 return null;
             }
 
