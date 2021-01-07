@@ -44,7 +44,7 @@ public class MaterialReader {
 
         register((tokenizer, line, key, material) ->
                         material.setColor(parseInt(tokenizer.nextToken(), 16)),
-                "diffuse_color");
+                "diffuse_color", "color");
 
         register((tokenizer, line, key, material) ->
                         material.setEmissive(parseBoolean(tokenizer.nextToken())),
