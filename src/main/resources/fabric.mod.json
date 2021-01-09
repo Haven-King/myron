@@ -16,7 +16,7 @@
     "main": [
     ],
     "client": [
-      "dev.monarkhēs.myron.impl.client.Myron"
+      "dev.monarkhes.myron.impl.client.Myron"
     ]
   },
   "mixins": [

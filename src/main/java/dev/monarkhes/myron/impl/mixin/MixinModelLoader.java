@@ -1,6 +1,6 @@
-package dev.monarkhēs.myron.impl.mixin;
+package dev.monarkhes.myron.impl.mixin;
 
-import dev.monarkhēs.myron.impl.client.obj.ObjLoader;
+import dev.monarkhes.myron.impl.client.obj.ObjLoader;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.ModelProviderException;

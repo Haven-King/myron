@@ -1,4 +1,4 @@
-package dev.monarkhēs.myron.impl.mixin;
+package dev.monarkhes.myron.impl.mixin;
 
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedModelManager;

@@ -1,6 +1,6 @@
-package dev.monarkhēs.myron.impl.client;
+package dev.monarkhes.myron.impl.client;
 
-import dev.monarkhēs.myron.impl.client.obj.ObjLoader;
+import dev.monarkhes.myron.impl.client.obj.ObjLoader;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
 import java.util.Collection;

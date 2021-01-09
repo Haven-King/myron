@@ -1,4 +1,4 @@
-package dev.monarkhēs.myron.impl.client.model;
+package dev.monarkhes.myron.impl.client.model;
 
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;

@@ -1,4 +1,4 @@
-package dev.monarkhēs.myron.impl.client.model;
+package dev.monarkhes.myron.impl.client.model;
 
 import com.mojang.datafixers.util.Pair;
 import de.javagl.obj.FloatTuple;

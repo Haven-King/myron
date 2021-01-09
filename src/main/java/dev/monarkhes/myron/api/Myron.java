@@ -1,6 +1,6 @@
-package dev.monarkhēs.myron.api;
+package dev.monarkhes.myron.api;
 
-import dev.monarkhēs.myron.impl.mixin.BakedModelManagerAccessor;
+import dev.monarkhes.myron.impl.mixin.BakedModelManagerAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.ModelIdentifier;

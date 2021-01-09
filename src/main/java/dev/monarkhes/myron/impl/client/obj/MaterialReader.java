@@ -1,6 +1,6 @@
-package dev.monarkhēs.myron.impl.client.obj;
+package dev.monarkhes.myron.impl.client.obj;
 
-import dev.monarkhēs.myron.impl.client.model.MyronMaterial;
+import dev.monarkhes.myron.impl.client.model.MyronMaterial;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
