@@ -196,13 +196,16 @@ public class MyronUnbakedModel implements UnbakedModel {
 
         // Used to offset blocks
         pos.add(this.offset);
-        Vector3f normal = of(group.getNormal(face.getNormalIndex(vertex)));
+
+        Vector3f normal = face.containsNormalIndices()
+                ? of(group.getNormal(face.getNormalIndex(vertex)))
+                : calculateNormal(group, face);
 
         float u = 0, v = 0;
         if (face.containsTexCoordIndices()) {
             FloatTuple textureCoords = group.getTexCoord(face.getTexCoordIndex(vertex));
             u = textureCoords.getX();
-            v = textureCoords.getY();
+            v = 1F - textureCoords.getY();
         }
 
         rotate(settings, pos, normal);
@@ -212,6 +215,21 @@ public class MyronUnbakedModel implements UnbakedModel {
         if (face.getNumVertices() == 3) {
             vertex(emitter, vertex + 1, pos, normal, u, v);
         }
+    }
+
+    private static Vector3f calculateNormal(Obj group, ObjFace face) {
+        Vector3f p1 = of(group.getVertex(face.getVertexIndex(0)));
+        Vector3f v1 = of(group.getVertex(face.getVertexIndex(1)));
+        Vector3f v2 = of(group.getVertex(face.getVertexIndex(2)));
+
+       v1.subtract(p1);
+       v2.subtract(p1);
+
+        return new Vector3f(
+                v1.getY() * v2.getZ() - v1.getZ() * v2.getY(),
+                v1.getZ() * v2.getX() - v1.getX() * v2.getZ(),
+                v1.getX() * v2.getY() - v1.getY() * v2.getX()
+        );
     }
 
     private static void rotate(ModelBakeSettings settings, Vector3f pos, Vector3f normal) {
