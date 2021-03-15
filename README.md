@@ -1,4 +1,4 @@
-# Myron
+# Myron ![latest version](https://img.shields.io/github/v/release/Haven-King/Myron)
 An OBJ loading library for the fabric ecosystem
 
 See the wiki for more information!
