@@ -78,8 +78,8 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
             JsonObject rawTransform = JsonHelper.getObject(rawModel, "display");
             return GSON.fromJson(rawTransform, ModelTransformation.class);
         } else if (rawModel.has("parent")) {
-            String[] parentStrings = JsonHelper.getString(rawModel, "parent").split(":");
-            Identifier parent = new Identifier(parentStrings[0], "models/" + parentStrings[1] + ".json");
+            Identifier parent = new Identifier(JsonHelper.getString(rawModel, "parent"));
+            parent = new Identifier(parent.getNamespace(), "models/" + parent.getPath() + ".json");
             return this.getTransformation(parent);
         } else {
             return ModelTransformation.NONE;
