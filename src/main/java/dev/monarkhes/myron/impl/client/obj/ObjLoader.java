@@ -44,7 +44,6 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
                 modelIdentifier.getNamespace(),
                 "models/item/" + modelIdentifier.getPath () + ".json");
 
-
         if (!modelIdentifier.getVariant().equals("inventory") || !this.resourceManager.containsResource(resource)) {
             return null;
         }

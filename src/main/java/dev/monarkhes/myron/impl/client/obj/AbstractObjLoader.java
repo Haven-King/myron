@@ -40,22 +40,7 @@ public class AbstractObjLoader {
 
                 InputStream inputStream = resourceManager.getResource(identifier).getInputStream();
                 Obj obj = ObjReader.read(inputStream);
-                Map<String, MyronMaterial> materials = new LinkedHashMap<>();
-
-                for (String s : obj.getMtlFileNames()) {
-                    String path = identifier.getPath();
-                    path = path.substring(0, path.lastIndexOf('/') + 1) + s;
-                    Identifier resource = new Identifier(identifier.getNamespace(), path);
-
-                    if (resourceManager.containsResource(resource)) {
-                        MaterialReader.read(
-                                new BufferedReader(
-                                    new InputStreamReader(resourceManager.getResource(resource).getInputStream())))
-                            .forEach(material -> materials.put(material.name, material));
-                    } else {
-                        Myron.LOGGER.warn("Texture does not exist: {}", resource);
-                    }
-                }
+                Map<String, MyronMaterial> materials = Myron.getMaterials(resourceManager, identifier, obj);
 
                 Collection<SpriteIdentifier> textureDependencies = new HashSet<>();
 
@@ -64,7 +49,9 @@ public class AbstractObjLoader {
                 }
 
                 MyronMaterial material = materials.get("sprite");
-                return new MyronUnbakedModel(textureDependencies, materials.size() > 0
+                return new MyronUnbakedModel(
+                        obj, materials,
+                        textureDependencies, materials.size() > 0
                         ? new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, (material == null
                         ? materials.values().iterator().next()
                         : material).getTexture())

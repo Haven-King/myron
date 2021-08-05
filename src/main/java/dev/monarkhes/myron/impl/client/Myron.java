@@ -110,7 +110,7 @@ public class Myron implements ClientModInitializer {
         return null;
     }
 
-    private static Map<String, MyronMaterial> getMaterials(ResourceManager resourceManager, Identifier identifier, Obj obj) throws IOException {
+    public static Map<String, MyronMaterial> getMaterials(ResourceManager resourceManager, Identifier identifier, Obj obj) throws IOException {
         Map<String, MyronMaterial> materials = new LinkedHashMap<>();
 
         for (String s : obj.getMtlFileNames()) {
