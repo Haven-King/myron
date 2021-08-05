@@ -29,5 +29,6 @@
   },
   "breaks": {
     "foml": "*"
-  }
+  },
+  "accessWidener": "myron.accesswidener"
 }
