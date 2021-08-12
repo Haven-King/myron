@@ -27,6 +27,8 @@ public class AbstractObjLoader {
 
     protected @Nullable UnbakedModel loadModel(
             ResourceManager resourceManager, Identifier identifier, ModelTransformation transformation, boolean isSideLit) {
+        boolean isBlock = identifier.getPath().startsWith("block");
+
         if (!identifier.getPath().endsWith(".obj")) {
             identifier = new Identifier(identifier.getNamespace(), identifier.getPath() + ".obj");
         }
@@ -55,7 +57,7 @@ public class AbstractObjLoader {
                         ? new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, (material == null
                         ? materials.values().iterator().next()
                         : material).getTexture())
-                        : DEFAULT_SPRITE, transformation, isSideLit);
+                        : DEFAULT_SPRITE, transformation, isSideLit, isBlock);
             } catch (IOException e) {
                 Myron.LOGGER.warn("Failed to load model {}:\n{}", identifier, e.getMessage());
             }
