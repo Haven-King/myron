@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom' version '0.8-SNAPSHOT'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 sourceCompatibility = JavaVersion.VERSION_16
@@ -18,6 +19,16 @@ repositories {
     mavenLocal()
 }
 
+// Relocating a Package
+shadowJar {
+    configurations = [project.configurations.shadow]
+    relocate 'de.javagl.obj', 'myron.shaded.de.javagl.obj'
+    classifier = "shadow"
+}
+
+tasks.remapJar.dependsOn shadowJar
+(tasks.remapJar.input as FileSystemLocationProperty<? extends FileSystemLocation>).set(shadowJar.archivePath)
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -25,8 +36,7 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "de.javagl:obj:${obj_version}"
-    include "de.javagl:obj:${obj_version}"
+    implementation(shadow("de.javagl:obj:${obj_version}"))
 }
 
 
