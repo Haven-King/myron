@@ -1,0 +1,3 @@
+accessWidener v1 named
+extendable class net/minecraft/client/render/model/json/ModelTransformation$Deserializer
+extendable class net/minecraft/client/render/model/json/Transformation$Deserializer
