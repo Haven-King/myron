@@ -59,9 +59,7 @@ public class MyronBakedModel implements BakedModel, FabricBakedModel {
         if (this.backupQuads == null) {
             this.backupQuads = new ArrayList<>();
 
-            mesh.forEach(quadView -> {
-                this.backupQuads.add(quadView.toBakedQuad(0, this.sprite, false));
-            });
+            mesh.forEach(quadView -> this.backupQuads.add(quadView.toBakedQuad(0, this.sprite, false)));
         }
 
         return this.backupQuads;
@@ -88,7 +86,7 @@ public class MyronBakedModel implements BakedModel, FabricBakedModel {
     }
 
     @Override
-    public Sprite getSprite() {
+    public Sprite getParticleSprite() {
         return this.sprite;
     }
 
