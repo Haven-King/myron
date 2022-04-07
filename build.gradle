@@ -26,7 +26,7 @@ shadowJar {
 }
 
 tasks.remapJar.dependsOn shadowJar
-(tasks.remapJar.input as FileSystemLocationProperty<? extends FileSystemLocation>).set(shadowJar.archivePath)
+(tasks.remapJar.getInputFile() as FileSystemLocationProperty<? extends FileSystemLocation>).set(shadowJar.archivePath)
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -78,13 +78,7 @@ jar {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
+            from components.java
         }
     }
 
