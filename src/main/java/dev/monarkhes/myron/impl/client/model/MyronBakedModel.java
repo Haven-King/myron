@@ -14,11 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockRenderView;
+import net.minecraft.world.gen.random.AbstractRandom;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 
 public class MyronBakedModel implements BakedModel, FabricBakedModel {
@@ -37,25 +37,26 @@ public class MyronBakedModel implements BakedModel, FabricBakedModel {
     }
 
     @Override
-    public void emitBlockQuads(BlockRenderView blockRenderView, BlockState blockState, BlockPos blockPos, Supplier<Random> supplier, RenderContext renderContext) {
+    public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<AbstractRandom> supplier, RenderContext ctx) {
         if (this.mesh != null) {
-            renderContext.meshConsumer().accept(mesh);
+            ctx.meshConsumer().accept(mesh);
         } else {
-            Myron.LOGGER.warn("Mesh is null while emitting block quads for block {}", blockState.getBlock().getName().asString());
+            Myron.LOGGER.warn("Mesh is null while emitting block quads for block {}", state.getBlock().getName().asString());
         }
     }
 
     @Override
-    public void emitItemQuads(ItemStack itemStack, Supplier<Random> supplier, RenderContext renderContext) {
+    public void emitItemQuads(ItemStack stack, Supplier<AbstractRandom> supplier, RenderContext ctx) {
         if (this.mesh != null) {
-            renderContext.meshConsumer().accept(mesh);
+            ctx.meshConsumer().accept(mesh);
         } else {
-            Myron.LOGGER.warn("Mesh is null while emitting block quads for item {}", itemStack.getItem().getName().asString());
+            Myron.LOGGER.warn("Mesh is null while emitting block quads for item {}", stack.getItem().getName().asString());
         }
     }
 
     // Since FabricBakedModels defer to use `emitBlockQuads` and `emitItemQuads`, this will only be called if
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
+    @Override
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, AbstractRandom random) {
         if (this.backupQuads == null) {
             this.backupQuads = new ArrayList<>();
 

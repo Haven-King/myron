@@ -35,10 +35,6 @@ public class MyronMaterial {
         this.name = name;
     }
 
-    public void setTexture(Identifier textureId) {
-        this.texture = textureId;
-    }
-
     public void setColor(float kd0, float kd1, float kd2) {
         this.color = 0xFF000000;
         this.color |= (int) (255 * kd0) << 16;
@@ -46,12 +42,12 @@ public class MyronMaterial {
         this.color |= (int) (255 * kd2);
     }
 
-    public void setColor(int color) {
-        this.color = color;
-    }
-
     public int getColor() {
         return this.color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public int getTintIndex() {
@@ -64,6 +60,10 @@ public class MyronMaterial {
 
     public Identifier getTexture() {
         return this.texture;
+    }
+
+    public void setTexture(Identifier textureId) {
+        this.texture = textureId;
     }
 
     public void lockUv(boolean enabled) {

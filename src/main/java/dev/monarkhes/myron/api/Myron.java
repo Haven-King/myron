@@ -17,6 +17,7 @@ public class Myron {
     /**
      * Gets a baked model by its ID.
      * Useful for models that aren't associated with blocks/items, and therefore don't have a {@link ModelIdentifier}.
+     *
      * @param id the id of the model to fetch
      * @return the model itself
      */

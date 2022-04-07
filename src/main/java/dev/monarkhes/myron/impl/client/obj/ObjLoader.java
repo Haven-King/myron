@@ -42,7 +42,7 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
     public @Nullable UnbakedModel loadModelVariant(ModelIdentifier modelIdentifier, ModelProviderContext modelProviderContext) {
         Identifier resource = new Identifier(
                 modelIdentifier.getNamespace(),
-                "models/item/" + modelIdentifier.getPath () + ".json");
+                "models/item/" + modelIdentifier.getPath() + ".json");
 
         if (!modelIdentifier.getVariant().equals("inventory") || !this.resourceManager.containsResource(resource)) {
             return null;
@@ -100,6 +100,7 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
             super();
         }
     }
+
     @Environment(EnvType.CLIENT)
     public static class TransformDeserializer extends Transformation.Deserializer {
         public TransformDeserializer() {

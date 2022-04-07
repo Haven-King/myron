@@ -13,13 +13,10 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class AbstractObjLoader {
@@ -37,10 +34,9 @@ public class AbstractObjLoader {
             identifier = new Identifier(identifier.getNamespace(), "models/" + identifier.getPath());
         }
 
-        if (resourceManager.containsResource(identifier)) {
+        if (resourceManager.getResource(identifier).isPresent()) {
             try {
-
-                InputStream inputStream = resourceManager.getResource(identifier).getInputStream();
+                InputStream inputStream = resourceManager.getResource(identifier).get().getInputStream();
                 Obj obj = ObjReader.read(inputStream);
                 Map<String, MyronMaterial> materials = Myron.getMaterials(resourceManager, identifier, obj);
 
