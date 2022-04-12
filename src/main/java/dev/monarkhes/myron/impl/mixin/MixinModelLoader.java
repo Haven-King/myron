@@ -21,11 +21,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.CLIENT)
 @Mixin(value = ModelLoader.class, priority = 100)
 public abstract class MixinModelLoader {
-    @Shadow @Final private ResourceManager resourceManager;
+    @Shadow
+    @Final
+    private ResourceManager resourceManager;
+    @Unique
+    private ModelResourceProvider objModelProvider;
 
-    @Shadow protected abstract void putModel(Identifier id, UnbakedModel unbakedModel);
-
-    @Unique private ModelResourceProvider objModelProvider;
+    @Shadow
+    protected abstract void putModel(Identifier id, UnbakedModel unbakedModel);
 
     @Inject(method = "loadModel", at = @At("HEAD"), cancellable = true)
     private void addObjModel(Identifier id, CallbackInfo ci) {

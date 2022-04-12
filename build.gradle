@@ -1,7 +1,7 @@
 plugins {
-    id 'fabric-loom' version '0.10-SNAPSHOT'
+    id 'fabric-loom' version '0.11-SNAPSHOT'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -12,7 +12,6 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    jcenter()
     maven { url = "https://oss.sonatype.org/content/repositories/releases/" }
     maven { url = "https://maven.dblsaiko.net/" }
     maven { url = "https://server.bbkr.space:8081/artifactory/libs-release/" }
@@ -27,7 +26,7 @@ shadowJar {
 }
 
 tasks.remapJar.dependsOn shadowJar
-(tasks.remapJar.input as FileSystemLocationProperty<? extends FileSystemLocation>).set(shadowJar.archivePath)
+(tasks.remapJar.getInputFile() as FileSystemLocationProperty<? extends FileSystemLocation>).set(shadowJar.archivePath)
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -79,13 +78,7 @@ jar {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
+            from components.java
         }
     }
 

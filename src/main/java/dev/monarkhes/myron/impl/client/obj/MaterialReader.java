@@ -11,11 +11,12 @@ import java.util.*;
 
 public class MaterialReader {
     private static final Map<String, Option> OPTIONS = new HashMap<>();
-    private static final Option NONE = (tokenizer, line, token, material) -> {};
+    private static final Option NONE = (tokenizer, line, token, material) -> {
+    };
 
     static {
         register((tokenizer, line, key, material) ->
-                material.setTexture(new Identifier(line.substring(key.length()).trim())),
+                        material.setTexture(new Identifier(line.substring(key.length()).trim())),
                 "map_Kd", "texture");
 
         register((tokenizer, line, key, material) ->
@@ -134,14 +135,10 @@ public class MaterialReader {
      * @return The float
      * @throws IOException If the string does not contain a valid float value
      */
-    private static float parseFloat(String s) throws IOException
-    {
-        try
-        {
+    private static float parseFloat(String s) throws IOException {
+        try {
             return Float.parseFloat(s);
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             throw new IOException(e);
         }
     }
@@ -150,23 +147,19 @@ public class MaterialReader {
      * Parse an int from the given string, wrapping number format
      * exceptions into an IOException
      *
-     * @param s The string
+     * @param s     The string
      * @param radix the radix to be used while parsing {@code s}.
      * @return The int
      * @throws IOException If the string does not contain a valid float value
      */
-    private static int parseInt(String s, int radix) throws IOException
-    {
+    private static int parseInt(String s, int radix) throws IOException {
         if (radix == 16 && s.startsWith("0x")) {
             s = s.substring(2);
         }
 
-        try
-        {
+        try {
             return Integer.parseInt(s, radix);
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             throw new IOException(e);
         }
     }

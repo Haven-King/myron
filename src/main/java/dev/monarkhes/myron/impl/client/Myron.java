@@ -19,6 +19,7 @@ import net.minecraft.client.render.model.ModelBakeSettings;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.AffineTransformation;
@@ -36,53 +37,11 @@ import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public class Myron implements ClientModInitializer {
-    private final static Vec3f NONE = new Vec3f();
-    private final static Vec3f BLOCKS = new Vec3f(0.5F, 0.5F, 0.5F);
-
     public static final String MOD_ID = "myron";
     public static final Logger LOGGER = LogManager.getLogger("Myron");
     public static final Map<Identifier, Mesh> MESHES = new HashMap<>();
-
-    @Override
-    public void onInitializeClient() {
-        ModelLoadingRegistry.INSTANCE.registerResourceProvider(ObjLoader::new);
-        ModelLoadingRegistry.INSTANCE.registerVariantProvider(ObjLoader::new);
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-            Collection<Identifier> ids = new HashSet<>();
-
-            Collection<Identifier> candidates = new ArrayList<>();
-            candidates.addAll(manager.findResources("models/block", path -> true));
-            candidates.addAll(manager.findResources("models/item", path -> true));
-            candidates.addAll(manager.findResources("models/misc", path -> true));
-
-            for (Identifier id : candidates) {
-                if (id.getPath().endsWith(".obj")) {
-                    ids.add(id);
-                    ids.add(new Identifier(id.getNamespace(), id.getPath().substring(0, id.getPath().indexOf(".obj"))));
-                } else {
-                    Identifier test = new Identifier(id.getNamespace(), id.getPath() + ".obj");
-
-                    if (manager.containsResource(test)) {
-                        ids.add(id);
-                    }
-                }
-            }
-
-            ids.forEach(
-                id -> {
-                    String path = id.getPath();
-
-                    if (path.startsWith("models/")) {
-                        out.accept(new Identifier(id.getNamespace(), path.substring("models/".length())));
-                    }
-
-                    out.accept(id);
-                }
-            );
-        });
-
-        LOGGER.info("Myron Initialized!");
-    }
+    private final static Vec3f NONE = new Vec3f();
+    private final static Vec3f BLOCKS = new Vec3f(0.5F, 0.5F, 0.5F);
 
     public static @Nullable Mesh load(Identifier modelPath, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings bakeSettings, boolean isBlock) {
         ResourceManager resourceManager = MinecraftClient.getInstance().getResourceManager();
@@ -95,9 +54,10 @@ public class Myron implements ClientModInitializer {
             modelPath = new Identifier(modelPath.getNamespace(), "models/" + modelPath.getPath());
         }
 
-        if (resourceManager.containsResource(modelPath)) {
+        Optional<Resource> resource = resourceManager.getResource(modelPath);
+        if (resource.isPresent()) {
             try {
-                InputStream inputStream = resourceManager.getResource(modelPath).getInputStream();
+                InputStream inputStream = resource.get().getInputStream();
                 Obj obj = ObjReader.read(inputStream);
 
                 Map<String, MyronMaterial> materials = getMaterials(resourceManager, modelPath, obj);
@@ -116,14 +76,16 @@ public class Myron implements ClientModInitializer {
         for (String s : obj.getMtlFileNames()) {
             String path = identifier.getPath();
             path = path.substring(0, path.lastIndexOf('/') + 1) + s;
-            Identifier resource = new Identifier(identifier.getNamespace(), path);
+            Identifier resourceId = new Identifier(identifier.getNamespace(), path);
 
-            if (resourceManager.containsResource(resource)) {
+            Optional<Resource> resource = resourceManager.getResource(resourceId);
+
+            if (resource.isPresent()) {
                 MaterialReader.read(new BufferedReader(
-                        new InputStreamReader(resourceManager.getResource(resource).getInputStream())))
+                                new InputStreamReader(resource.get().getInputStream())))
                         .forEach(material -> materials.put(material.name, material));
             } else {
-                Myron.LOGGER.warn("Texture does not exist: {}", resource);
+                Myron.LOGGER.warn("Texture does not exist: {}", resourceId);
             }
         }
 
@@ -313,17 +275,47 @@ public class Myron implements ClientModInitializer {
         return new Vec3f(tuple.getX(), tuple.getY(), tuple.getZ());
     }
 
-    private static class Vertex {
-        public final Vec3f pos;
-        public final Vec3f normal;
-        public final float u;
-        public final float v;
+    @Override
+    public void onInitializeClient() {
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(ObjLoader::new);
+        ModelLoadingRegistry.INSTANCE.registerVariantProvider(ObjLoader::new);
+        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+            Collection<Identifier> ids = new HashSet<>();
 
-        private Vertex(Vec3f pos, Vec3f normal, float u, float v) {
-            this.pos = pos;
-            this.normal = normal;
-            this.u = u;
-            this.v = v;
-        }
+            Map<Identifier, Resource> candidates = new HashMap<>();
+            candidates.putAll(manager.findResources("models/block", path -> true));
+            candidates.putAll(manager.findResources("models/item", path -> true));
+            candidates.putAll(manager.findResources("models/misc", path -> true));
+
+            for (Identifier id : candidates.keySet()) {
+                if (id.getPath().endsWith(".obj")) {
+                    ids.add(id);
+                    ids.add(new Identifier(id.getNamespace(), id.getPath().substring(0, id.getPath().indexOf(".obj"))));
+                } else {
+                    Identifier test = new Identifier(id.getNamespace(), id.getPath() + ".obj");
+
+                    if (manager.getResource(test).isPresent()) {
+                        ids.add(id);
+                    }
+                }
+            }
+
+            ids.forEach(
+                    id -> {
+                        String path = id.getPath();
+
+                        if (path.startsWith("models/")) {
+                            out.accept(new Identifier(id.getNamespace(), path.substring("models/".length())));
+                        }
+
+                        out.accept(id);
+                    }
+            );
+        });
+
+        LOGGER.info("Myron Initialized!");
+    }
+
+    private record Vertex(Vec3f pos, Vec3f normal, float u, float v) {
     }
 }

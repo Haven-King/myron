@@ -42,13 +42,13 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
     public @Nullable UnbakedModel loadModelVariant(ModelIdentifier modelIdentifier, ModelProviderContext modelProviderContext) {
         Identifier resource = new Identifier(
                 modelIdentifier.getNamespace(),
-                "models/item/" + modelIdentifier.getPath () + ".json");
+                "models/item/" + modelIdentifier.getPath() + ".json");
 
-        if (!modelIdentifier.getVariant().equals("inventory") || !this.resourceManager.containsResource(resource)) {
+        if (!modelIdentifier.getVariant().equals("inventory") || this.resourceManager.getResource(resource).isEmpty()) {
             return null;
         }
 
-        try (Reader reader = new InputStreamReader(this.resourceManager.getResource(resource).getInputStream())) {
+        try (Reader reader = new InputStreamReader(this.resourceManager.getResource(resource).get().getInputStream())) {
             JsonObject rawModel = JsonHelper.deserialize(reader);
 
             JsonElement model = rawModel.get("model");
@@ -86,8 +86,8 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
     }
 
     private ModelTransformation getTransformation(Identifier model) throws IOException {
-        if (this.resourceManager.containsResource(model)) {
-            Reader reader = new InputStreamReader(this.resourceManager.getResource(model).getInputStream());
+        if (this.resourceManager.getResource(model).isPresent()) {
+            Reader reader = new InputStreamReader(this.resourceManager.getResource(model).get().getInputStream());
             return getTransformation(JsonHelper.deserialize(reader));
         } else {
             return ModelTransformation.NONE;
@@ -100,6 +100,7 @@ public class ObjLoader extends AbstractObjLoader implements ModelResourceProvide
             super();
         }
     }
+
     @Environment(EnvType.CLIENT)
     public static class TransformDeserializer extends Transformation.Deserializer {
         public TransformDeserializer() {
